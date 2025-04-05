@@ -1,0 +1,24 @@
+services:
+  todo-app:
+    build: ./
+    command: ./todo-app
+    ports:
+      - 8080:8080
+    depends_on:
+      - db
+    environment:
+      DB_PASSWORD: ${DB_PASSWORD}
+
+  db:
+    restart: always
+    image: postgres:latest
+    environment:
+      DB_PASSWORD: ${DB_PASSWORD}
+      PGDATA: /data/postgres
+    volumes:
+      - postgres_data:/data/postgres
+    ports:
+      - 5432:5432
+
+volumes:
+  postgres_data:
