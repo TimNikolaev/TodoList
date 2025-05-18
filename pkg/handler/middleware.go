@@ -10,7 +10,7 @@ import (
 
 const (
 	authorizationHeader = "Authorization"
-	userCtx             = "userId"
+	userCtx             = "userID"
 )
 
 func (h *Handler) userIdentity(c *gin.Context) {
@@ -21,7 +21,7 @@ func (h *Handler) userIdentity(c *gin.Context) {
 	}
 
 	token := strings.TrimPrefix(authedHeader, "Bearer ")
-	userId, err := h.services.Authorization.ParseToken(token)
+	userId, err := h.Authorization.ParseToken(token)
 	if err != nil {
 		newErrorResponse(c, http.StatusUnauthorized, err.Error())
 		return

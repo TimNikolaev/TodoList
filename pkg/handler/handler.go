@@ -7,11 +7,17 @@ import (
 )
 
 type Handler struct {
-	services *service.Service
+	service.Authorization
+	service.ToDoList
+	service.ToDoItem
 }
 
 func NewHandler(services *service.Service) *Handler {
-	return &Handler{services: services}
+	return &Handler{
+		Authorization: services.Authorization,
+		ToDoList:      services.ToDoList,
+		ToDoItem:      services.ToDoItem,
+	}
 }
 
 func (h *Handler) InitRoutes() *gin.Engine {

@@ -20,7 +20,7 @@ func (h *Handler) createList(c *gin.Context) {
 		return
 	}
 
-	id, err = h.services.ToDoList.Create(id, input)
+	id, err = h.ToDoList.Create(id, input)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -40,7 +40,7 @@ func (h *Handler) getAllLists(c *gin.Context) {
 		return
 	}
 
-	lists, err := h.services.ToDoList.GetAll(userID)
+	lists, err := h.ToDoList.GetAll(userID)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -64,7 +64,7 @@ func (h *Handler) getListByID(c *gin.Context) {
 		return
 	}
 
-	list, err := h.services.ToDoList.GetByID(userID, listID)
+	list, err := h.ToDoList.GetByID(userID, listID)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -92,7 +92,7 @@ func (h *Handler) updateListByID(c *gin.Context) {
 		return
 	}
 
-	err = h.services.ToDoList.Update(userID, listID, input)
+	err = h.ToDoList.Update(userID, listID, input)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
@@ -115,7 +115,7 @@ func (h *Handler) deleteListByID(c *gin.Context) {
 		return
 	}
 
-	err = h.services.ToDoList.Delete(userID, listID)
+	err = h.ToDoList.Delete(userID, listID)
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
 		return
