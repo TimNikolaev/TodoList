@@ -8,6 +8,7 @@ import (
 	"todo-app"
 	"todo-app/pkg/handler"
 	"todo-app/pkg/repository"
+	"todo-app/pkg/repository/postgres"
 	"todo-app/pkg/service"
 
 	"github.com/joho/godotenv"
@@ -27,7 +28,7 @@ func main() {
 		logrus.Fatalf("error loading env variables: %s", err.Error())
 	}
 
-	db, err := repository.NewPostgresDB(&repository.Config{
+	db, err := postgres.NewPostgresDB(&postgres.Config{
 		Host:     viper.GetString("db.host"),
 		Port:     viper.GetString("db.port"),
 		Username: viper.GetString("db.username"),

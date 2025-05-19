@@ -2,6 +2,7 @@ package repository
 
 import (
 	"todo-app"
+	"todo-app/pkg/repository/postgres"
 
 	"github.com/jmoiron/sqlx"
 )
@@ -35,8 +36,8 @@ type Repository struct {
 
 func NewRepository(db *sqlx.DB) *Repository {
 	return &Repository{
-		Authorization: NewAuthPostgres(db),
-		ToDoList:      NewToDoListPostgres(db),
-		ToDoItem:      NewToDoItemPostgres(db),
+		Authorization: postgres.NewAuthPostgres(db),
+		ToDoList:      postgres.NewToDoListPostgres(db),
+		ToDoItem:      postgres.NewToDoItemPostgres(db),
 	}
 }
