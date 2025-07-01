@@ -10,8 +10,8 @@ services:
       DB_PASSWORD: ${DB_PASSWORD}
 
   db:
-    restart: always
     image: postgres:latest
+    restart: no
     environment:
       DB_PASSWORD: ${DB_PASSWORD}
       PGDATA: /data/postgres
