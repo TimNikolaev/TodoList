@@ -42,7 +42,6 @@ func (h *Handler) InitRoutes() *gin.Engine {
 			{
 				items.POST("/", h.createItem) // Создать задачу
 				items.GET("/", h.getAllItems)
-
 			}
 		}
 

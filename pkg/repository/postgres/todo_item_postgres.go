@@ -23,9 +23,9 @@ func (r *ToDoItemPostgres) Create(listID int, item todo.ToDoItem) (int, error) {
 	}
 
 	var itemID int
-	createItemQuery := fmt.Sprintf("INSERT INTO %s (title, discription) values ($1, $2) RETURNING id", todoItemsTable)
+	createItemQuery := fmt.Sprintf("INSERT INTO %s (title, description) values ($1, $2) RETURNING id", todoItemsTable)
 
-	if err := tx.QueryRow(createItemQuery, item.Title, item.Discription).Scan(&itemID); err != nil {
+	if err := tx.QueryRow(createItemQuery, item.Title, item.Description).Scan(&itemID); err != nil {
 		return 0, err
 	}
 
@@ -43,7 +43,7 @@ func (r *ToDoItemPostgres) Create(listID int, item todo.ToDoItem) (int, error) {
 func (r *ToDoItemPostgres) GetAll(userID, listID int) ([]todo.ToDoItem, error) {
 	var items []todo.ToDoItem
 
-	query := fmt.Sprintf(`SELECT ti.id, ti.title, ti.discription, ti.done FROM %s ti
+	query := fmt.Sprintf(`SELECT ti.id, ti.title, ti.description, ti.done FROM %s ti
 	 INNER JOIN %s li on li.item_id = ti.id
 		 INNER JOIN %s ul on ul.lists_id = li.list_id
 		  WHERE li.list_id = $1 AND ul.user_id = $2`,
@@ -59,7 +59,7 @@ func (r *ToDoItemPostgres) GetAll(userID, listID int) ([]todo.ToDoItem, error) {
 func (r *ToDoItemPostgres) GetByID(userID, itemID int) (todo.ToDoItem, error) {
 	var item todo.ToDoItem
 
-	query := fmt.Sprintf(`SELECT ti.id, ti.title, ti.discription, ti.done FROM %s ti
+	query := fmt.Sprintf(`SELECT ti.id, ti.title, ti.description, ti.done FROM %s ti
 	 INNER JOIN %s li on li.item_id = ti.id
 		 INNER JOIN %s ul on ul.lists_id = li.list_id
 		  WHERE ti.id = $1 AND ul.user_id = $2`,
@@ -91,9 +91,9 @@ func (r *ToDoItemPostgres) Update(userID, itemID int, input todo.UpdateItemInput
 		argID++
 	}
 
-	if input.Discription != nil {
-		setValues = append(setValues, fmt.Sprintf("discription=$%d", argID))
-		args = append(args, *input.Discription)
+	if input.Description != nil {
+		setValues = append(setValues, fmt.Sprintf("description=$%d", argID))
+		args = append(args, *input.Description)
 		argID++
 	}
 
