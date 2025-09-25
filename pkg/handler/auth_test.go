@@ -2,6 +2,7 @@ package handler
 
 import (
 	"bytes"
+	"errors"
 	"net/http/httptest"
 	"testing"
 	"todo-app"
@@ -13,7 +14,7 @@ import (
 )
 
 func TestHandler_signUp(t *testing.T) {
-	type mockBehavior func(s *mocks.Authorization, user todo.User)
+	type mockBehavior func(*mocks.Authorization, todo.User)
 
 	testTable := []struct {
 		name                 string
@@ -24,7 +25,7 @@ func TestHandler_signUp(t *testing.T) {
 		expectedResponseBody string
 	}{
 		{
-			name:      "ok",
+			name:      "OK",
 			inputBody: `{"name":"Test","username":"test","password":"qwerty"}`,
 			inputUser: todo.User{
 				Name:     "Test",
@@ -36,6 +37,30 @@ func TestHandler_signUp(t *testing.T) {
 			},
 			expectedStatusCode:   200,
 			expectedResponseBody: `{"id":1}`,
+		},
+
+		{
+			name:      "Empty Fields",
+			inputBody: `{"name":"Test","password":"qwerty"}`,
+			mockBehavior: func(s *mocks.Authorization, user todo.User) {
+			},
+			expectedStatusCode:   400,
+			expectedResponseBody: `{"message":"invalid input body"}`,
+		},
+
+		{
+			name:      "Service Fail",
+			inputBody: `{"name":"Test","username":"test","password":"qwerty"}`,
+			inputUser: todo.User{
+				Name:     "Test",
+				UserName: "test",
+				Password: "qwerty",
+			},
+			mockBehavior: func(s *mocks.Authorization, user todo.User) {
+				s.On("CreateUser", user).Return(0, errors.New("service error"))
+			},
+			expectedStatusCode:   500,
+			expectedResponseBody: `{"message":"service error"}`,
 		},
 	}
 

@@ -15,7 +15,7 @@ const (
 
 func (h *Handler) userIdentity(c *gin.Context) {
 	authedHeader := c.GetHeader(authorizationHeader)
-	if !strings.HasPrefix(authedHeader, "Bearer ") {
+	if !strings.HasPrefix(authedHeader, "Bearer ") || len(strings.Split(strings.TrimRight(authedHeader, " "), " ")) != 2 {
 		newErrorResponse(c, http.StatusUnauthorized, "invalid auth header")
 		return
 	}
@@ -23,7 +23,7 @@ func (h *Handler) userIdentity(c *gin.Context) {
 	token := strings.TrimPrefix(authedHeader, "Bearer ")
 	userId, err := h.Authorization.ParseToken(token)
 	if err != nil {
-		newErrorResponse(c, http.StatusUnauthorized, err.Error())
+		newErrorResponse(c, http.StatusUnauthorized, "failed to parse token")
 		return
 	}
 
