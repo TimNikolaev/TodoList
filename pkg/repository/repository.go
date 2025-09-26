@@ -7,6 +7,7 @@ import (
 	"github.com/jmoiron/sqlx"
 )
 
+//go:generate go run github.com/vektra/mockery/v2@latest --all
 type Authorization interface {
 	CreateUser(user todo.User) (int, error)
 	GetUser(userName, password string) (todo.User, error)
